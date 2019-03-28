@@ -1,0 +1,33 @@
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane fx:controller="main.Controller"
+          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10" prefWidth="1000" prefHeight="600">
+    <gridLinesVisible>true</gridLinesVisible>
+    <HBox>
+
+        <Pane maxWidth="300" prefWidth="300" minWidth="300">
+            <VBox>
+                <HBox>
+                    <Button alignment="CENTER" onMouseClicked="#start">start</Button>
+                    <Label fx:id="timeLabel"/>
+                    <Label>Seconds</Label>
+                </HBox>
+
+                <ComboBox fx:id="sortingAlgorithms"/>
+                <HBox>
+                    <Label>Number of elements:</Label>
+                    <TextField fx:id="numValues"/>
+                </HBox>
+                <HBox>
+                    <Label>Frame rate 1-60 fps</Label>
+                    <Slider fx:id="slider" min="1" max="60" value="30"/>
+                    <Label fx:id="frameRate">30</Label>
+                </HBox>
+            </VBox>
+        </Pane>
+        <Separator orientation="VERTICAL"/>
+        <Canvas fx:id="canvas" width="700" height="600">
+        </Canvas>
+    </HBox>
+</GridPane>
