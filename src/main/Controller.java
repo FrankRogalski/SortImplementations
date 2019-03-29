@@ -8,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -40,13 +39,10 @@ public class Controller implements Initializable {
     public ComboBox<String> sortingAlgorithms;
 
     @FXML
-    public Slider slider;
+    public TextField fps;
 
     @FXML
     public TextField numValues;
-
-    @FXML
-    public Label frameRate;
 
     @FXML
     public Label timeLabel;
@@ -56,22 +52,14 @@ public class Controller implements Initializable {
         sortingAlgorithmMap.put("Insertion sort", new InsertionSort());
         sortingAlgorithmMap.put("Quick sort", new QuickSort());
         sortingAlgorithmMap.put("Merge sort", new MergeSort());
-        sortingAlgorithmMap.put("Tim sort", new TimSort());
         sortingAlgorithmMap.put("Heap sort", new HeapSort());
-        sortingAlgorithmMap.put("Intro sort", new IntroSort());
         sortingAlgorithmMap.put("Selection sort", new SelectionSort());
         sortingAlgorithmMap.put("Shell sort", new ShellSort());
         sortingAlgorithmMap.put("Bubble sort", new BubbleSort());
-        sortingAlgorithmMap.put("Binary tree sort", new BinaryTreeSort());
         sortingAlgorithmMap.put("Cycle sort", new CycleSort());
-        sortingAlgorithmMap.put("Library sort", new LibrarySort());
-        sortingAlgorithmMap.put("Patience sorting", new PatienceSort());
-        sortingAlgorithmMap.put("Smooth sort", new SmoothSort());
-        sortingAlgorithmMap.put("Tournament sort", new TournamentSort());
         sortingAlgorithmMap.put("Cocktail sort", new CocktailSort());
         sortingAlgorithmMap.put("Comb sort", new CombSort());
         sortingAlgorithmMap.put("Gnome sort", new GnomeSort());
-        sortingAlgorithmMap.put("Block sort", new BlockSort());
         sortingAlgorithmMap.put("Odd-even sort", new OddEvenSort());
     }
 
@@ -88,7 +76,16 @@ public class Controller implements Initializable {
 
         time = System.currentTimeMillis();
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(1000d / slider.getValue()), e -> loop()));
+        final String fpsString = fps.getText();
+        int iterations = 1;
+        if (!fpsString.equals("")) {
+            iterations = Integer.valueOf(fpsString);
+        }
+        if (iterations == 0) {
+            iterations = 1;
+        }
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(1000d / iterations), e -> loop()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -168,13 +165,18 @@ public class Controller implements Initializable {
 
         graphicsContext = canvas.getGraphicsContext2D();
 
-        numValues.setText("10");
+        numValues.setText("50");
         numValues.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d{0,5}")) {
+            if (!newValue.matches("\\d{0,4}")) {
                 numValues.setText(oldValue);
             }
         });
 
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> frameRate.setText(String.valueOf((int) slider.getValue())));
+        fps.setText("10");
+        fps.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d{0,3}")) {
+                fps.setText(oldValue);
+            }
+        });
     }
 }

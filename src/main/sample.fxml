@@ -21,8 +21,7 @@
                 </HBox>
                 <HBox>
                     <Label>Frame rate 1-60 fps</Label>
-                    <Slider fx:id="slider" min="1" max="60" value="30"/>
-                    <Label fx:id="frameRate">30</Label>
+                    <TextField fx:id="fps"/>
                 </HBox>
             </VBox>
         </Pane>
