@@ -19,7 +19,7 @@
                     <TextField fx:id="numValues"/>
                 </HBox>
                 <HBox>
-                    <Label>Frame rate 1-60 fps</Label>
+                    <Label>Frame rate 1-999 fps</Label>
                     <TextField fx:id="fps"/>
                 </HBox>
             </VBox>

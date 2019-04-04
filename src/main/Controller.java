@@ -77,12 +77,13 @@ public class Controller implements Initializable {
         time = System.currentTimeMillis();
 
         final String fpsString = fps.getText();
-        int iterations = 1;
+        int iterations = 0;
         if (!fpsString.equals("")) {
             iterations = Integer.valueOf(fpsString);
         }
         if (iterations == 0) {
             iterations = 1;
+            fps.setText("1");
         }
 
         timeline = new Timeline(new KeyFrame(Duration.millis(1000d / iterations), e -> loop()));
@@ -93,18 +94,19 @@ public class Controller implements Initializable {
     private void fillArray() {
         final int height = (int) canvas.getHeight();
         final String iterationString = numValues.getText();
-        int iterations = 0;
+        int elements = 0;
         if (!iterationString.equals("")) {
-            iterations = Integer.valueOf(iterationString);
+            elements = Integer.valueOf(iterationString);
         }
 
-        if (iterations > 0) {
-            blockWidth = canvas.getWidth() / iterations;
-        } else {
-            blockWidth = 1;
+        if (elements == 0) {
+            elements = 10;
+            numValues.setText("10");
         }
 
-        values = IntStream.range(0, iterations)
+        blockWidth = canvas.getWidth() / elements;
+
+        values = IntStream.range(0, elements)
                 .map(i -> random.nextInt(height))
                 .boxed()
                 .collect(Collectors.toList());

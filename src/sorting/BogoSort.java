@@ -10,9 +10,8 @@ public class BogoSort implements SortingAlgorithm {
 
     @Override
     public List<Change> sort(final List<Integer> list) {
-        final int max = list.size() * list.size();
         changes.clear();
-        for (int i = 0; i < max && !sorted(list); i++) {
+        for (int i = 0; i < 1000 && !sorted(list); i++) {
             shuffle(list);
         }
         return changes;
