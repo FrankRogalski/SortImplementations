@@ -5,12 +5,11 @@
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10" prefWidth="1000" prefHeight="600">
     <gridLinesVisible>true</gridLinesVisible>
     <HBox>
-
         <Pane maxWidth="300" prefWidth="300" minWidth="300">
             <VBox>
                 <HBox>
                     <Button alignment="CENTER" onMouseClicked="#start">start</Button>
-                    <Label fx:id="timeLabel"/>
+                    <Label fx:id="timeLabel">0</Label>
                     <Label>Seconds</Label>
                 </HBox>
 
