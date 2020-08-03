@@ -1,10 +1,10 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class QuickSort implements SortingAlgorithm {
-    private final List<Change> changes = new ArrayList<>();
+    private final List<Change> changes = new LinkedList<>();
 
     @Override
     public List<Change> sort(final List<Integer> list) {

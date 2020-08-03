@@ -1,12 +1,12 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SelectionSort implements SortingAlgorithm {
     @Override
     public List<Change> sort(final List<Integer> list) {
-        final List<Change> changes = new ArrayList<>();
+        final List<Change> changes = new LinkedList<>();
         int n = list.size();
         for (int j = 0; j < n - 1; j++) {
             int iMin = j;

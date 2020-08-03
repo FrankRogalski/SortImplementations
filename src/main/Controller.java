@@ -20,17 +20,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static javafx.animation.Animation.INDEFINITE;
+
 public class Controller implements Initializable {
     private Timeline timeline;
     private List<Integer> values = new ArrayList<>();
     private final Random random = new Random();
-    private int index = 0;
-    private List<Change> changes;
-    private Map<String, SortingAlgorithm> sortingAlgorithmMap = new HashMap<>();
+    private Iterator<Change> changes;
+    private final Map<String, SortingAlgorithm> sortingAlgorithmMap = new HashMap<>();
     private GraphicsContext graphicsContext;
     private double blockWidth = 0;
     private long time;
-    private DecimalFormat decimalFormat = new DecimalFormat("###,###.##");
+    private final DecimalFormat decimalFormat = new DecimalFormat("###,###.##");
 
     @FXML
     public Canvas canvas;
@@ -69,17 +70,16 @@ public class Controller implements Initializable {
             timeline.stop();
         }
 
-        index = 0;
         fillArray();
         graphicsContext.setFill(Color.BLACK);
-        changes = sortingAlgorithm.sort(new ArrayList<>(values));
+        changes = sortingAlgorithm.sort(new ArrayList<>(values)).iterator();
 
         time = System.currentTimeMillis();
 
         final String fpsString = fps.getText();
         int iterations = 0;
         if (!fpsString.equals("")) {
-            iterations = Integer.valueOf(fpsString);
+            iterations = Integer.parseInt(fpsString);
         }
         if (iterations == 0) {
             iterations = 1;
@@ -87,7 +87,7 @@ public class Controller implements Initializable {
         }
 
         timeline = new Timeline(new KeyFrame(Duration.millis(1000d / iterations), e -> loop()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(INDEFINITE);
         timeline.play();
     }
 
@@ -96,7 +96,7 @@ public class Controller implements Initializable {
         final String iterationString = numValues.getText();
         int elements = 0;
         if (!iterationString.equals("")) {
-            elements = Integer.valueOf(iterationString);
+            elements = Integer.parseInt(iterationString);
         }
 
         if (elements == 0) {
@@ -113,47 +113,47 @@ public class Controller implements Initializable {
     }
 
     private void loop() {
-        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        Paint paint;
+        try {
+            final Change change = changes.next();
 
-        final Change change = changes.get(index++);
+            graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            Paint paint;
 
-        switch (change.getChangeType()) {
-            case READ:
-                paint = Color.GREEN;
-                break;
-            case COMPARE:
-                paint = Color.BLUE;
-                break;
-            case WRITE:
-                paint = Color.YELLOW;
-                values.set(change.getNumber1(), change.getValue());
-                break;
-            case SWAP:
-                paint = Color.RED;
+            switch (change.getChangeType()) {
+                case READ:
+                    paint = Color.GREEN;
+                    break;
+                case COMPARE:
+                    paint = Color.BLUE;
+                    break;
+                case WRITE:
+                    paint = Color.YELLOW;
+                    values.set(change.getNumber1(), change.getValue());
+                    break;
+                case SWAP:
+                    paint = Color.RED;
 
-                final int temp = values.get(change.getNumber1());
-                values.set(change.getNumber1(), values.get(change.getNumber2()));
-                values.set(change.getNumber2(), temp);
-                break;
-            default:
-                paint = Color.BLACK;
-        }
-
-
-        for (int i = 0; i < values.size(); i++) {
-            final int value = values.get(i);
-            if (i == change.getNumber1() || i == change.getNumber2()) {
-                graphicsContext.setFill(paint);
-            } else {
-                graphicsContext.setFill(Color.BLACK);
+                    final int temp = values.get(change.getNumber1());
+                    values.set(change.getNumber1(), values.get(change.getNumber2()));
+                    values.set(change.getNumber2(), temp);
+                    break;
+                default:
+                    paint = Color.BLACK;
             }
-            graphicsContext.fillRect(i * blockWidth, canvas.getHeight() - value, blockWidth, value);
-        }
 
-        timeLabel.setText(decimalFormat.format((System.currentTimeMillis() - time) / 1000d));
 
-        if (index >= changes.size()) {
+            for (int i = 0; i < values.size(); i++) {
+                final int value = values.get(i);
+                if (i == change.getNumber1() || i == change.getNumber2()) {
+                    graphicsContext.setFill(paint);
+                } else {
+                    graphicsContext.setFill(Color.BLACK);
+                }
+                graphicsContext.fillRect(i * blockWidth, canvas.getHeight() - value, blockWidth, value);
+            }
+
+            timeLabel.setText(decimalFormat.format((System.currentTimeMillis() - time) / 1000d));
+        } catch (final NoSuchElementException ex) {
             timeline.stop();
         }
     }

@@ -1,12 +1,12 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class GnomeSort implements SortingAlgorithm {
     @Override
     public List<Change> sort(final List<Integer> list) {
-        final List<Change> changes = new ArrayList<>();
+        final List<Change> changes = new LinkedList<>();
         int pos = 0;
         while (pos < list.size()) {
             changes.add(new Change(ChangeType.COMPARE, pos, pos - 1));

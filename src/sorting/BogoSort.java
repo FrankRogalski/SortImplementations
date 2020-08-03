@@ -1,11 +1,11 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class BogoSort implements SortingAlgorithm {
-    private final List<Change> changes =new ArrayList<>();
+    private final List<Change> changes = new LinkedList<>();
     private final Random random = new Random();
 
     @Override

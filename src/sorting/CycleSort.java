@@ -1,25 +1,19 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CycleSort implements SortingAlgorithm {
     @Override
     public List<Change> sort(final List<Integer> list) {
-        final List<Change> changes = new ArrayList<>();
+        final List<Change> changes = new LinkedList<>();
         for (int i = 0; i < list.size() - 1; i++) {
             boolean first = true;
             int item = list.get(i);
             changes.add(new Change(ChangeType.READ, i));
             int pos;
             do {
-                pos = i;
-                for (int j = i + 1; j < list.size(); j++) {
-                    changes.add(new Change(ChangeType.READ, j));
-                    if (list.get(j) < item) {
-                        pos++;
-                    }
-                }
+                pos = getPos(list, changes, i, item);
 
                 if (pos == i && first) {
                     continue;
@@ -40,5 +34,17 @@ public class CycleSort implements SortingAlgorithm {
             } while (pos != i);
         }
         return changes;
+    }
+
+    private int getPos(List<Integer> list, List<Change> changes, int i, int item) {
+        int pos;
+        pos = i;
+        for (int j = i + 1; j < list.size(); j++) {
+            changes.add(new Change(ChangeType.READ, j));
+            if (list.get(j) < item) {
+                pos++;
+            }
+        }
+        return pos;
     }
 }

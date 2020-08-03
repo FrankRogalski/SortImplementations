@@ -1,10 +1,11 @@
 package sorting;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MergeSort implements SortingAlgorithm {
-    private final List<Change> changes = new ArrayList<>();
+    private final List<Change> changes = new LinkedList<>();
     private List<Integer> list;
 
     @Override

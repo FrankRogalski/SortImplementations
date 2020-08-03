@@ -1,12 +1,12 @@
 package sorting;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class InsertionSort implements SortingAlgorithm {
     @Override
     public List<Change> sort(final List<Integer> list) {
-        final List<Change> changes = new ArrayList<>();
+        final List<Change> changes = new LinkedList<>();
         for (int i = 1; i < list.size(); i++) {
             int j = i;
             changes.add(new Change(ChangeType.COMPARE, j, j - 1));
